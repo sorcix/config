@@ -1,0 +1,51 @@
+*filter
+:OUTPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:INPUT DROP [0:0]
+
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A OUTPUT -m conntrack --ctstate INVALID -j DROP
+
+-A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+-A INPUT -p udp -m conntrack --ctstate ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+#===============================================================================
+# ICMP
+#===============================================================================
+
+-A OUTPUT -p icmp -j ACCEPT
+-A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+#===============================================================================
+# SERVICES
+#===============================================================================
+
+# SSH Server
+-A INPUT -m conntrack --ctstate NEW -p tcp -m multiport --dport 22,2222 -j ACCEPT
+
+#===============================================================================
+# CLIENT
+#===============================================================================
+
+# SSH
+-A OUTPUT -m owner --uid-owner vic -m conntrack --ctstate NEW -p tcp -m multiport --dport 22,2222 -j ACCEPT
+
+# HTTP
+-A OUTPUT -m conntrack --ctstate NEW -p tcp -m multiport --dport 80,443 -j ACCEPT
+
+# DNS
+-A OUTPUT -p udp --dport 53 -j ACCEPT
+
+# NTP
+-A OUTPUT -p udp --dport 123 -j ACCEPT
+
+# IRC
+-A OUTPUT -m owner --uid-owner vic -m conntrack --ctstate NEW -p tcp -m multiport --dport 6667,6697 -j ACCEPT
+
+COMMIT
