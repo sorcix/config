@@ -1,0 +1,26 @@
+Port 22
+Port 2222
+
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+Protocol 2
+
+UseDNS no
+
+PermitRootLogin no
+LoginGraceTime 1m
+
+Passwordauthentication no
+ChallengeResponseAuthentication no
+
+AuthorizedKeysFile .ssh/authorized_keys
+
+Subsystem sftp /usr/lib/ssh/sftp-server
+
+PrintMotd no
+
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+AllowUsers vic

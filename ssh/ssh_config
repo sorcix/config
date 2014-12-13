@@ -1,0 +1,17 @@
+Protocol 2
+
+ForwardAgent no
+ForwardX11 no
+
+HashKnownHosts yes
+
+NumberOfPasswordPrompts 1
+
+PreferredAuthentications publickey,keyboard-interactive,password
+
+UserKnownHostsFile ~/.ssh/known_hosts
+
+IdentityFile ~/.ssh/id_rsa
+
+ServerAliveInterval 300
+ServerAliveCountMax 2
